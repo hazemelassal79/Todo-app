@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:todo/core/home_layout/bottom_sheet_widget.dart';
+import 'package:todo/core/widgets/show_add_task_bottom.dart';
 import 'package:todo/pages/home_view/home_view.dart';
 import 'package:todo/pages/settings_view/settings_view.dart';
 
 class HomeLayoutView extends StatefulWidget {
-  HomeLayoutView({super.key});
+  const HomeLayoutView({super.key});
   static const String routeName = "HomeLayout";
   @override
   State<HomeLayoutView> createState() => _HomeLayoutViewState();
@@ -13,8 +13,8 @@ class HomeLayoutView extends StatefulWidget {
 class _HomeLayoutViewState extends State<HomeLayoutView> {
   int selectedIndex = 0;
   List<Widget> pages = [
-    HomeView(),
-    SettingsView(),
+     const HomeView(),
+    const SettingsView(),
   ];
   @override
   Widget build(BuildContext context) {
@@ -22,14 +22,14 @@ class _HomeLayoutViewState extends State<HomeLayoutView> {
     return Scaffold(
       floatingActionButton: GestureDetector(
         onTap: () {
-          showAddTaskBottom();
+          showAddTaskBottom(context);
         },
         child: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             color: Colors.white,
             shape: BoxShape.circle,
           ),
-          padding: EdgeInsets.all(4),
+          padding: const EdgeInsets.all(4),
           child: Container(
             width: 45,
             height: 45,
@@ -37,25 +37,22 @@ class _HomeLayoutViewState extends State<HomeLayoutView> {
               shape: BoxShape.circle,
               color: theme.primaryColor,
             ),
-            child: Icon(Icons.add, color: Colors.white),
+            child: const Icon(Icons.add, color: Colors.white),
           ),
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      extendBody: true,
       body: pages[selectedIndex],
-      bottomNavigationBar: BottomAppBar(
-        shape: CircularNotchedRectangle(),
-        notchMargin: 8,
-        child: BottomNavigationBar(
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.white,
           currentIndex: selectedIndex,
           onTap: (value) {
             selectedIndex = value;
             setState(() {});
           },
-          items: [
+          items: const [
             BottomNavigationBarItem(
-              icon: Icon(Icons.menu_outlined),
+              icon: Icon(Icons.home_filled),
               label: "Home",
             ),
             BottomNavigationBarItem(
@@ -63,20 +60,7 @@ class _HomeLayoutViewState extends State<HomeLayoutView> {
               label: "Settings",
             ),
           ],
-        ),
       ),
-    );
-  }
-  void showAddTaskBottom() {
-    showModalBottomSheet(
-      context: context,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-            topLeft:Radius.circular(25),
-            topRight:Radius.circular(25),
-        ),
-      ),
-      builder: (context) => BottomSheetWidget(),
     );
   }
 }

@@ -1,93 +1,140 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
+import 'package:todo/core/network_layer/firestore_utils.dart';
 import 'package:todo/core/widgets/custom_text_form_field.dart';
+import 'package:todo/models/task_model.dart';
 
-class BottomSheetWidget extends StatelessWidget {
+class BottomSheetWidget extends StatefulWidget {
+  const BottomSheetWidget({super.key});
+
+  @override
+  State<BottomSheetWidget> createState() => _BottomSheetWidgetState();
+}
+
+class _BottomSheetWidgetState extends State<BottomSheetWidget> {
   TextEditingController titleController = TextEditingController();
+
   TextEditingController descriptionController = TextEditingController();
+
   var formKey = GlobalKey<FormState>();
-  BottomSheetWidget({super.key});
+
+  DateTime? selectedDate;
 
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Form(
-        key: formKey,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Text(
-              "add new task",
-              textAlign: TextAlign.center,
-              style: theme.textTheme.titleLarge!.copyWith(color: Colors.black),
-            ),
-            CustomTextFormField(
+    return Container(
+      decoration: const BoxDecoration(
+          borderRadius: BorderRadius.only(
+        topLeft: Radius.circular(20),
+        topRight: Radius.circular(20),
+      )),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Form(
+          key: formKey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                "add new task",
+                textAlign: TextAlign.center,
+                style:
+                    theme.textTheme.titleLarge!.copyWith(color: Colors.black),
+              ),
+              CustomTextFormField(
                 controller: titleController,
                 title: "enter your task title",
-                validator: (String? value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return "you must write task title";
-                  } else if (value.length < 10) {
-                    return "you task title must be at least 10 characters";
+                validator: (value) {
+                  if (value?.isEmpty ?? true) {
+                    return "Field is required";
                   } else {
                     return null;
                   }
                 },
-      ),
-      CustomTextFormField(
-        controller: descriptionController,
-        title: "enter your task description",
-        validator: (String? value) {
-          if (value == null || value.trim().isEmpty) {
-            return "you must write task title";
-          } else if (value.length < 10) {
-            return "you task title must be at least 10 characters";
-          } else {
-            return null;
-          }
-        },
-      ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Text(
-                  "add new task",
-                  style:
-                      theme.textTheme.bodyLarge!.copyWith(color: Colors.black),
+              ),
+              CustomTextFormField(
+                controller: descriptionController,
+                title: "enter your task description",
+                validator: (value) {
+                  if (value?.isEmpty ?? true) {
+                    return "Field is required";
+                  } else {
+                    return null;
+                  }
+                },
+              ),
+              GestureDetector(
+                onTap: () {
+                  showCalendar();
+                },
+                child: Text(
+                  DateFormat.yMd().format(selectedDate ?? DateTime.now()),
+                  textAlign: TextAlign.center,
+                  style: theme.textTheme.bodyMedium!.copyWith(
+                    color: theme.primaryColor,
+                    fontSize: 18,
+                  ),
                 ),
-                // GestureDetector{
-                // onTap(){
-                //   showCalendar(context);},
-                //   child: Text(
-                //     "5 oct 2023",
-                //     textAlign: TextAlign.center,
-                //     style: theme.textTheme.bodyMedium!.copyWith(color: theme.primaryColor),
-                //   ),
-              ],
-            ),
-            ElevatedButton(
-                onPressed: () {
+              ),
+              ElevatedButton(
+                onPressed: () async {
                   if (formKey.currentState!.validate()) {
-                    print(titleController.text);
+                    if (selectedDate?.isBefore(DateTime.now()) ?? true) {
+                      Fluttertoast.showToast(
+                          msg: 'You cannot select a current or a previous time');
+                      return;
+                    }
+                    var model = TaskModel(
+                      title: titleController.text,
+                      description: descriptionController.text,
+                      dateTime: selectedDate ?? DateTime.now(),
+                      isDone: false,
+                    );
+                    await FirestoreUtils.addDataToFireStore(model);
+                    Navigator.pop(context);
                   }
                 },
                 child: Text(
                   "add new task",
-                  style:theme.textTheme.bodyLarge!.copyWith(color: Colors.white)
+                  style:
+                      theme.textTheme.bodyLarge!.copyWith(color: Colors.black),
                 ),
-            )
-          ],
-         ),
+              )
+            ],
+          ),
         ),
-      );
-  }
-  void showCalendar(BuildContext context) {
-    showDatePicker(context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime.now(),
-        lastDate: DateTime.now().add(Duration(days: 365)),
+      ),
     );
+  }
+
+  void showCalendar() async {
+    var dateSelected = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now(),
+      lastDate: DateTime.now().add(const Duration(days: 365)),
+    ).whenComplete(
+      () {},
+    );
+    if (dateSelected == null) {
+      return;
+    } else {
+      final time = await selectTime();
+      if (time == null) {
+        return;
+      }
+      selectedDate =
+          dateSelected.copyWith(hour: time.hour, minute: time.minute);
+      setState(() {});
+    }
+  }
+
+  Future<TimeOfDay?> selectTime() async {
+    final time =
+        await showTimePicker(context: context, initialTime: TimeOfDay.now());
+    return time;
   }
 }

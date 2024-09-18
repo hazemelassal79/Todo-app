@@ -1,21 +1,23 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:todo/core/home_layout/home_layout_view.dart';
 import '../../core/widgets/custom_text_form_field.dart';
+
 class RegisterView extends StatefulWidget {
-  static String routeName="register";
-   RegisterView({super.key});
+  static String routeName = "register";
+
+  const RegisterView({super.key});
 
   @override
   State<RegisterView> createState() => _RegisterViewState();
-
 }
 
 class _RegisterViewState extends State<RegisterView> {
   TextEditingController fullNameConroller = TextEditingController();
   TextEditingController emailConroller = TextEditingController();
-  TextEditingController passwordConroller  = TextEditingController();
+  TextEditingController passwordConroller = TextEditingController();
   TextEditingController confirmPasswordConroller = TextEditingController();
-  var formKey=GlobalKey<FormState>();
+  var formKey = GlobalKey<FormState>();
   bool isVisible = false;
 
   @override
@@ -24,9 +26,9 @@ class _RegisterViewState extends State<RegisterView> {
     return Container(
       decoration: BoxDecoration(
         color: theme.colorScheme.onSecondary,
-        image: DecorationImage(
+        image: const DecorationImage(
           image: AssetImage(
-            "assets/images/login_pattern.png",
+            "assets/images/OBSKHP0.jpg",
           ),
           fit: BoxFit.cover,
         ),
@@ -35,13 +37,15 @@ class _RegisterViewState extends State<RegisterView> {
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           toolbarHeight: 120,
-          iconTheme: IconThemeData(
-            color: Colors.white,
+          iconTheme: const IconThemeData(
+            color: Colors.black,
           ),
           backgroundColor: Colors.transparent,
           title: Text(
             "create account",
-            style: theme.textTheme.titleLarge,
+            style: theme.textTheme.titleLarge!.copyWith(
+                color: Colors.black
+            ),
           ),
           centerTitle: true,
         ),
@@ -54,28 +58,36 @@ class _RegisterViewState extends State<RegisterView> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.14,
+                    height: MediaQuery
+                        .of(context)
+                        .size
+                        .height * 0.14,
                   ),
-                  SizedBox(height: 40,),
+                  const SizedBox(
+                    height: 40,
+                  ),
                   CustomTextFormField(
                     title: "full name",
                     labelText: "full name",
                     controller: fullNameConroller,
                     validator: (value) {
-                      if (value == null || value.trim().isEmpty)
-                      {
+                      if (value == null || value
+                          .trim()
+                          .isEmpty) {
                         return "you must enter your full name ";
                       }
                       return null;
                     },
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   CustomTextFormField(
                     title: "E-mail",
                     labelText: "E-mail",
                     controller: emailConroller,
                     validator: (value) {
-                      if (value == null || value.trim().isEmpty)
+                      if (value == null || value
+                          .trim()
+                          .isEmpty)
                         return "you must eneter your email address";
                       var regex = RegExp(
                           r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
@@ -85,7 +97,9 @@ class _RegisterViewState extends State<RegisterView> {
                       return null;
                     },
                   ),
-                  SizedBox(height: 20,),
+                  const SizedBox(
+                    height: 20,
+                  ),
                   CustomTextFormField(
                     title: "password",
                     labelText: "password",
@@ -93,24 +107,30 @@ class _RegisterViewState extends State<RegisterView> {
                     obscureText: !isVisible,
                     suffixIcon: GestureDetector(
                         onTap: () {
-                          isVisible=!isVisible;
+                          isVisible = !isVisible;
                           setState(() {});
                         },
                         child: isVisible == true
-                            ? Icon(Icons.visibility_off_outlined, size: 25)
-                            : Icon(Icons.visibility_outlined, size: 25)),
+                            ? const Icon(Icons.visibility_off_outlined,
+                            size: 25)
+                            : const Icon(Icons.visibility_outlined, size: 25)),
                     validator: (value) {
-                      if (value == null || value.trim().isEmpty) {
+                      if (value == null || value
+                          .trim()
+                          .isEmpty) {
                         return "you must enter your password";
                       }
-                      var regex=RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
-                      if(regex.hasMatch(value)) {
+                      var regex = RegExp(
+                          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+                      if (regex.hasMatch(value)) {
                         return "Invalid password";
                       }
                       return null;
                     },
                   ),
-                  SizedBox(height: 20,),
+                  const SizedBox(
+                    height: 20,
+                  ),
                   CustomTextFormField(
                     title: "confirm password",
                     labelText: "confirm password",
@@ -118,28 +138,34 @@ class _RegisterViewState extends State<RegisterView> {
                     obscureText: !isVisible,
                     suffixIcon: GestureDetector(
                         onTap: () {
-                          isVisible=!isVisible;
+                          isVisible = !isVisible;
                           setState(() {});
                         },
                         child: isVisible == true
-                            ? Icon(Icons.visibility_off_outlined, size: 25)
-                            : Icon(Icons.visibility_outlined, size: 25)),
+                            ? const Icon(Icons.visibility_off_outlined,
+                            size: 25)
+                            : const Icon(Icons.visibility_outlined, size: 25)),
                     validator: (value) {
-                      if (value == null || value.trim().isEmpty) {
+                      if (value == null || value
+                          .trim()
+                          .isEmpty) {
                         return "you must enter your confirm password";
                       }
-                      if(value!=passwordConroller.text){
+                      if (value != passwordConroller.text) {
                         return "password does not match ";
                       }
                       return null;
                     },
                   ),
-                  SizedBox(height: 40),
-                  MaterialButton(onPressed:(){
-                    register();
-                  },
+                  const SizedBox(height: 40),
+                  MaterialButton(
+                    onPressed: () {
+                      register(onSuccess: () {
+                        Navigator.pushNamedAndRemoveUntil(context, HomeLayoutView.routeName , (route) => false,);
+                      });
+                    },
                     child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 40),
+                      padding: const EdgeInsets.symmetric(horizontal: 40),
                       height: 55,
                       decoration: BoxDecoration(
                         color: theme.primaryColor,
@@ -148,12 +174,14 @@ class _RegisterViewState extends State<RegisterView> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("login",
+                          Text(
+                            "register",
                             style: theme.textTheme.bodyLarge!.copyWith(
-                              color:  Colors.white,
+                              color: Colors.white,
                             ),
                           ),
-                          Icon(Icons.arrow_forward,
+                          const Icon(
+                            Icons.arrow_forward,
                             color: Colors.white,
                             size: 30,
                           ),
@@ -161,7 +189,7 @@ class _RegisterViewState extends State<RegisterView> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                 ],
               ),
             ),
@@ -171,22 +199,25 @@ class _RegisterViewState extends State<RegisterView> {
     );
   }
 
-  register() async {
-    if (formKey.currentState!.validate()){
+  register({required Function onSuccess}) async {
+    if (formKey.currentState!.validate()) {
       try {
         await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: emailConroller.text,
           password: passwordConroller.text,
         );
+        onSuccess.call();
       } on FirebaseAuthException catch (e) {
-        if (e.code == 'weak-password') {
-          print('The password provided is too weak.');
-        } else if (e.code == 'email-already-in-use') {
-          print('The account already exists for that email.');
-        }
+        showSnackBar(e.message.toString());
       } catch (e) {
-        print(e);
+        showSnackBar(e.toString());
       }
     }
   }
+
+  void showSnackBar(String message) {
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(message)));
+  }
 }
+

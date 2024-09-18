@@ -1,24 +1,23 @@
 import 'package:flutter/material.dart';
+
 class CustomTextFormField extends StatelessWidget {
-   TextEditingController? controller;
+  TextEditingController? controller;
   final FormFieldValidator<String>? validator;
-   String? title;
-   String? labelText;
+  String? title;
+  String? labelText;
   final int maxlines;
-  Widget?suffixIcon;
+  Widget? suffixIcon;
   bool obscureText;
-  CustomTextFormField(
-      {
-        super.key,
-        required this.title,
-        required this.controller,
-        this.labelText,
-         this.validator,
-         this.maxlines=1,
-        this.suffixIcon,
-        this.obscureText=false,
-      }
-      );
+  CustomTextFormField({
+    super.key,
+    required this.title,
+    required this.controller,
+    this.labelText,
+    this.validator,
+    this.maxlines = 1,
+    this.suffixIcon,
+    this.obscureText = false,
+  });
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
