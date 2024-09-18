@@ -14,9 +14,9 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
-  TextEditingController emailConroller = TextEditingController();
-  TextEditingController passwordConroller = TextEditingController();
-  bool isVisible = false;
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  bool isVisible = true;
   var formKey = GlobalKey<FormState>();
 
   @override
@@ -64,7 +64,7 @@ class _LoginViewState extends State<LoginView> {
                   CustomTextFormField(
                     title: "email",
                     labelText: "E-mail",
-                    controller: emailConroller,
+                    controller: emailController,
                     validator: (value) {
                       if (value == null || value.trim().isEmpty) {
                         return "you must enter your email address";
@@ -83,14 +83,14 @@ class _LoginViewState extends State<LoginView> {
                   CustomTextFormField(
                     title: "password",
                     labelText: "password",
-                    controller: passwordConroller,
+                    controller: passwordController,
                     obscureText: !isVisible,
                     suffixIcon: GestureDetector(
                         onTap: () {
                           isVisible = !isVisible;
                           setState(() {});
                         },
-                        child: isVisible == true
+                        child: isVisible == false
                             ? const Icon(Icons.visibility_off_outlined, size: 25)
                             : const Icon(Icons.visibility_outlined, size: 25)),
                     validator: (value) {
@@ -175,18 +175,12 @@ class _LoginViewState extends State<LoginView> {
     if (formKey.currentState!.validate()) {
       try {
         var user = await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: emailConroller.text,
-          password: passwordConroller.text,
+          email: emailController.text,
+          password: passwordController.text,
         );
         onSuccess.call();
       } on FirebaseAuthException catch (e) {
         showSnackBar(e.message.toString());
-        // if (e.code == 'user-not-found') {
-        //   ScaffoldMessenger.of(context)
-        //       .showSnackBar(SnackBar(content: Text(e.message.toString())));
-        // } else if (e.code == 'wrong-password') {
-        //   print('Wrong password provided for that user.');
-        // }
       }
     }
   }

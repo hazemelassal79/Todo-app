@@ -13,12 +13,12 @@ class RegisterView extends StatefulWidget {
 }
 
 class _RegisterViewState extends State<RegisterView> {
-  TextEditingController fullNameConroller = TextEditingController();
-  TextEditingController emailConroller = TextEditingController();
-  TextEditingController passwordConroller = TextEditingController();
-  TextEditingController confirmPasswordConroller = TextEditingController();
+  TextEditingController fullNameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController confirmPasswordController = TextEditingController();
   var formKey = GlobalKey<FormState>();
-  bool isVisible = false;
+  bool isVisible = true;
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +69,7 @@ class _RegisterViewState extends State<RegisterView> {
                   CustomTextFormField(
                     title: "full name",
                     labelText: "full name",
-                    controller: fullNameConroller,
+                    controller: fullNameController,
                     validator: (value) {
                       if (value == null || value
                           .trim()
@@ -83,12 +83,12 @@ class _RegisterViewState extends State<RegisterView> {
                   CustomTextFormField(
                     title: "E-mail",
                     labelText: "E-mail",
-                    controller: emailConroller,
+                    controller: emailController,
                     validator: (value) {
                       if (value == null || value
                           .trim()
                           .isEmpty)
-                        return "you must eneter your email address";
+                        return "you must enter your email address";
                       var regex = RegExp(
                           r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
                       if (!regex.hasMatch(value)) {
@@ -103,14 +103,14 @@ class _RegisterViewState extends State<RegisterView> {
                   CustomTextFormField(
                     title: "password",
                     labelText: "password",
-                    controller: passwordConroller,
+                    controller: passwordController,
                     obscureText: !isVisible,
                     suffixIcon: GestureDetector(
                         onTap: () {
                           isVisible = !isVisible;
                           setState(() {});
                         },
-                        child: isVisible == true
+                        child: isVisible == false
                             ? const Icon(Icons.visibility_off_outlined,
                             size: 25)
                             : const Icon(Icons.visibility_outlined, size: 25)),
@@ -134,14 +134,14 @@ class _RegisterViewState extends State<RegisterView> {
                   CustomTextFormField(
                     title: "confirm password",
                     labelText: "confirm password",
-                    controller: confirmPasswordConroller,
+                    controller: confirmPasswordController,
                     obscureText: !isVisible,
                     suffixIcon: GestureDetector(
                         onTap: () {
                           isVisible = !isVisible;
                           setState(() {});
                         },
-                        child: isVisible == true
+                        child: isVisible == false
                             ? const Icon(Icons.visibility_off_outlined,
                             size: 25)
                             : const Icon(Icons.visibility_outlined, size: 25)),
@@ -151,7 +151,7 @@ class _RegisterViewState extends State<RegisterView> {
                           .isEmpty) {
                         return "you must enter your confirm password";
                       }
-                      if (value != passwordConroller.text) {
+                      if (value != passwordController.text) {
                         return "password does not match ";
                       }
                       return null;
@@ -203,8 +203,8 @@ class _RegisterViewState extends State<RegisterView> {
     if (formKey.currentState!.validate()) {
       try {
         await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: emailConroller.text,
-          password: passwordConroller.text,
+          email: emailController.text,
+          password: passwordController.text,
         );
         onSuccess.call();
       } on FirebaseAuthException catch (e) {
