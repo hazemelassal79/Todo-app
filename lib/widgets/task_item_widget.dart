@@ -65,10 +65,12 @@ class TaskItemWidget extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                       style: theme.textTheme.bodyLarge,
                     ),
-                    Text(taskModel.description,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: theme.textTheme.bodyMedium),
+                    Expanded(
+                      child: Text(taskModel.description,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: theme.textTheme.bodyMedium),
+                    ),
                     Row(
                       children: [
                         const Icon(

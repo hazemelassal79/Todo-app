@@ -2,19 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 class ApplicationTheme {
   static bool isDark=true;
-  static Color PrimaryColor = Color(0xff5D9CEC);
+  static Color PrimaryColor = const Color(0xff5D9CEC);
   static ThemeData LightTheme=ThemeData(
     primaryColor: PrimaryColor,
-    scaffoldBackgroundColor: Color(0xffdfecdb),
+    scaffoldBackgroundColor: const Color(0xffdfecdb),
     colorScheme: ColorScheme.fromSeed(
-      primary: Color(0xffB7935F),
+      primary: const Color(0xffB7935F),
       seedColor: PrimaryColor,
-      onSecondary: Color(0xff242424),
+      onSecondary: const Color(0xff242424),
       onPrimary:  PrimaryColor,
       background: Colors.white,
     ),
     appBarTheme: AppBarTheme(
-        iconTheme: IconThemeData(
+        iconTheme: const IconThemeData(
           color: Colors.black
         ),
         elevation: 0,
@@ -73,16 +73,16 @@ class ApplicationTheme {
   );
   static ThemeData DarkTheme=ThemeData(
     scaffoldBackgroundColor: Colors.transparent,
-    primaryColor: Color(0xff141a2e),
+    primaryColor: const Color(0xff141a2e),
     colorScheme: ColorScheme.fromSeed(
-      primary: Color(0xff141a2e),
-      seedColor: Color(0xff141a2e),
-      onSecondary: Color(0xfffacc1d),
-      onPrimary: Color(0xfffacc1d),
-      onBackground: Color(0xff141a2e),
+      primary: const Color(0xff141a2e),
+      seedColor: const Color(0xff141a2e),
+      onSecondary: const Color(0xfffacc1d),
+      onPrimary: const Color(0xfffacc1d),
+      onBackground: const Color(0xff141a2e),
     ),
     appBarTheme: AppBarTheme(
-      iconTheme: IconThemeData(
+      iconTheme: const IconThemeData(
         color: Colors.white,
       ),
         backgroundColor: Colors.transparent,
@@ -95,7 +95,7 @@ class ApplicationTheme {
       elevation: 0,
     ),
 
-    bottomNavigationBarTheme: BottomNavigationBarThemeData(
+    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
       backgroundColor:Color(0xff141a2e),
       type:BottomNavigationBarType.fixed,
       selectedIconTheme: IconThemeData(
@@ -132,9 +132,9 @@ class ApplicationTheme {
       ),
     ),
     bottomSheetTheme: BottomSheetThemeData(
-      backgroundColor: Color(0xff141a2e).withOpacity(0.9),
+      backgroundColor: const Color(0xff141a2e).withOpacity(0.9),
     ),
-    dividerColor: Color(0xfffacc1d),
+    dividerColor: const Color(0xfffacc1d),
 
   );
 }

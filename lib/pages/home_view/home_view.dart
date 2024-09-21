@@ -20,7 +20,6 @@ class _HomeViewState extends State<HomeView> {
   final displayedItems = <TaskModel>[];
   
   DateTime selectedDate = DateTime(DateTime.now().year , DateTime.now().month , DateTime.now().day);
-//HELLOOOOOOOOOOOOOOOOOOOOOOOO
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
@@ -58,7 +57,6 @@ class _HomeViewState extends State<HomeView> {
               activeDayColor: theme.primaryColor,
               activeBackgroundDayColor: Colors.white,
               dotColor: theme.primaryColor,
-              selectableDayPredicate: (date) => date.day != 23,
               locale: 'en_ISO',
             ),
           ],
@@ -79,7 +77,7 @@ class _HomeViewState extends State<HomeView> {
                   const SizedBox(
                     height: 20,
                   ),
-                  IconButton(onPressed: (){}, icon: Icon(Icons.refresh)),
+                  IconButton(onPressed: (){}, icon: const Icon(Icons.refresh)),
                 ],
               );
             }

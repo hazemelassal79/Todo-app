@@ -45,6 +45,7 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget> {
                     theme.textTheme.titleLarge!.copyWith(color: Colors.black),
               ),
               CustomTextFormField(
+                maxlines: 1,
                 controller: titleController,
                 title: "enter your task title",
                 validator: (value) {
@@ -56,6 +57,7 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget> {
                 },
               ),
               CustomTextFormField(
+                maxlines: 5,
                 controller: descriptionController,
                 title: "enter your task description",
                 validator: (value) {
@@ -88,8 +90,8 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget> {
                       return;
                     }
                     var model = TaskModel(
-                      title: titleController.text,
-                      description: descriptionController.text,
+                      title: titleController.text.trim(),
+                      description: descriptionController.text.trim(),
                       dateTime: selectedDate ?? DateTime.now(),
                       isDone: false,
                     );
